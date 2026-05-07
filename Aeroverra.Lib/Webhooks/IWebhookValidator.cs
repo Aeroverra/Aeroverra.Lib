@@ -18,4 +18,23 @@
         /// </summary>
         string ProviderName { get; }
     }
+
+    /// <summary>
+    /// Strongly-typed base for <see cref="IWebhookValidator"/> implementations whose provider list is captured by an enum.
+    /// Eliminates string typos at the call site by deriving <see cref="ProviderName"/> from <see cref="Provider"/>.
+    /// </summary>
+    /// <typeparam name="TEnum">The consumer-defined enum that enumerates webhook providers.</typeparam>
+    public abstract class WebhookValidator<TEnum> : IWebhookValidator where TEnum : struct, Enum
+    {
+        /// <summary>
+        /// The provider this validator is for.
+        /// </summary>
+        public abstract TEnum Provider { get; }
+
+        /// <inheritdoc />
+        public string ProviderName => Provider.ToString();
+
+        /// <inheritdoc />
+        public abstract Task<bool> ValidateAsync(Webhook webhook, CancellationToken cancellationToken = default);
+    }
 }
