@@ -31,5 +31,17 @@ namespace Aeroverra.Lib.Extensions
             services.Configure<RabbitMQOptions>(configuration.GetSection(RabbitMQOptions.SectionName));
             return services;
         }
+
+        /// <summary>
+        /// Binds PayPal API credentials and partner identifiers from the <c>PayPal</c>
+        /// configuration section into <see cref="PayPalOptions"/>. Used by the PayPalServerSDK
+        /// client (or any other PayPal caller) to resolve auth + partner attribution at
+        /// startup time.
+        /// </summary>
+        public static IServiceCollection AddPayPalOptions(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<PayPalOptions>(configuration.GetSection(PayPalOptions.SectionName));
+            return services;
+        }
     }
 }
