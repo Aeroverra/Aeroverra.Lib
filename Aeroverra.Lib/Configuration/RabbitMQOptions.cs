@@ -1,9 +1,10 @@
-namespace Aeroverra.Lib.Queues
+namespace Aeroverra.Lib.Configuration
 {
     /// <summary>
     /// Connection settings for the RabbitMQ broker. Bound from the <c>RabbitMQ</c> section
-    /// of <c>IConfiguration</c> by <c>AddRabbitMQPublisher</c> / <c>AddRabbitMQConsumerHost</c> /
-    /// <c>AddRabbitMQTopology</c>.
+    /// of <c>IConfiguration</c> (typically via the <c>AddRabbitMQOptions</c> extension).
+    /// Reusable across any RabbitMQ client — the bundled MassTransit setup, an external
+    /// MassTransit-free publisher, an admin tool, etc.
     /// </summary>
     public class RabbitMQOptions
     {

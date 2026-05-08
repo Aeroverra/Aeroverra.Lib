@@ -91,14 +91,14 @@ internal sealed class PayPalWebhookValidator(PayPalApi api, ILogger<PayPalWebhoo
 This is where durable persistence lives. Save + enqueue **before** returning 200 to the provider, so a process crash doesn't drop the event.
 
 ```csharp
-public sealed class MyWebhookHandler(IDbContextFactory<AppDb> dbFactory, IQueuePublisher queue)
+public sealed class MyWebhookHandler(IDbContextFactory<AppDb> dbFactory)
     : IWebhookHandler
 {
     public Task OnAfterReadAsync(Webhook webhook, CancellationToken ct) => Task.CompletedTask;
 
     public async Task OnAfterValidateAsync(string provider, bool isValid, Webhook webhook, CancellationToken ct)
     {
-        using var ctx = dbFactory.CreateDbContext();
+        using var dbContext = dbFactory.CreateDbContext();
         var row = new WebhookReceived
         {
             Provider                       = provider,
@@ -108,9 +108,10 @@ public sealed class MyWebhookHandler(IDbContextFactory<AppDb> dbFactory, IQueueP
             ProviderVerificationSuccessful = isValid,
             TimeReceived                   = webhook.TimeReceived,
         };
-        ctx.WebhookReceived.Add(row);
-        await ctx.SaveChangesAsync(ct);
-        await queue.PublishWebhookAsync(row);
+        dbContext.WebhookReceived.Add(row);
+        await dbContext.SaveChangesAsync(ct);
+        // Then enqueue downstream processing — your queue framework of choice.
+        // (e.g. MassTransit: await bus.GetSendEndpoint(...).Send(new MyMessage(row.Id)).)
     }
 }
 ```

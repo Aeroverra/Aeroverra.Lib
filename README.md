@@ -7,7 +7,6 @@ The pieces shipped today:
 | Area | What it does | Docs |
 |---|---|---|
 | Webhooks | Provider-agnostic read + validate pipeline for incoming webhooks (PayPal, Stripe, BTCPay, …). Provides interfaces, defaults, DI wiring, and an optional typed-enum overlay. | [docs/Webhooks.md](docs/Webhooks.md) |
-| Queues | RabbitMQ publisher + scalable consumer host + declarative topology (DLX, bindings). Typed `Envelope<T>` envelopes, per-queue consumer counts, capped app-managed retries, broker auto-recovery. | [docs/Queues.md](docs/Queues.md) |
 
 ## Install
 
