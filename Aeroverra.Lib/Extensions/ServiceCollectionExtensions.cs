@@ -43,5 +43,16 @@ namespace Aeroverra.Lib.Extensions
             services.Configure<PayPalOptions>(configuration.GetSection(PayPalOptions.SectionName));
             return services;
         }
+
+        /// <summary>
+        /// Binds outbound email credentials from the <c>Email</c> configuration section into
+        /// <see cref="EmailOptions"/>. Used by the queue-driven email sender (and any other
+        /// SMTP caller) to resolve host/port/password at send time.
+        /// </summary>
+        public static IServiceCollection AddEmailOptions(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+            return services;
+        }
     }
 }
