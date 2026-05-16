@@ -46,5 +46,16 @@ namespace Aeroverra.Lib.Configuration
         /// inbound transmissions came from PayPal.
         /// </summary>
         public string? WebhookId { get; set; }
+
+        /// <summary>
+        /// Optional PayPal Orders v2 negative testing code (e.g. <c>NOT_AUTHORIZED</c>,
+        /// <c>INSTRUMENT_DECLINED</c>, <c>TRANSACTION_REFUSED</c>). When set, capture calls
+        /// send the value as the <c>PayPal-Mock-Response</c> header so PayPal sandbox
+        /// simulates that failure. Bare codes are wrapped into the
+        /// <c>{"mock_application_codes":"..."}</c> envelope automatically; a full JSON
+        /// object can be supplied verbatim. Honored only when the host environment is
+        /// Development; ignored in Staging / Production so a stray value cannot leak.
+        /// </summary>
+        public string? MockCaptureResponse { get; set; }
     }
 }
